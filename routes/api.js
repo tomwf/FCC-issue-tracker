@@ -137,6 +137,15 @@ module.exports = function (app) {
     .delete(function (req, res){
       let project = req.params.project;
 
+      const { _id } = req.body
+
+      mongoose.connect(MONGO_URI)
+
+      Issue.findByIdAndDelete(_id, (err, issue) => {
+        if (err) console.error(err)
+
+        res.send(issue)
+      })
     });
 
 };
