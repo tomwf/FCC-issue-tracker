@@ -95,13 +95,8 @@ module.exports = function (app) {
       })
 
       newIssue.save()
-        .then(response => {
-          res.send(response)
-        })
-        .catch(err => {
-          console.error(err)
-          res.send(err)
-        })
+        .then(response => res.send(response))
+        .catch(err => res.send(err))
     })
 
     .put(function (req, res){
