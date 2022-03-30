@@ -356,4 +356,414 @@ suite('Functional Tests', function() {
       })
     })
   })
+
+  suite('Test PUT request', function() {
+    suite('Update one field on an issue: PUT request to /api/issues/{project}', function() {
+      test('issue_title = Updated title', function(done) {
+        const newIssue = {
+          issue_title: 'Title to be updated',
+          issue_text:  'This is to test PUT request for one field',
+          created_by: 'me',
+          assigned_to: 'me',
+          status_text: 'pending'
+        }
+
+        // Create a test issue
+        chai.request(server)
+          .post('/api/issues/:project')
+          .send(newIssue)
+          .end((err, res) => {
+            if (err) console.error(err)
+
+            const { _id } = res.body
+            const issue_title = 'Updated title'
+            const updatedIssue = {
+              _id,
+              issue_title,
+              issue_text: '',
+              created_by: '',
+              assigned_to: '',
+              status_text: '',
+            }
+
+            // Update the issue
+            chai.request(server)
+              .put('/api/issues/:project')
+              .send(updatedIssue)
+              .end((err, res) => {
+                if (err) console.error(err)
+
+                assert.equal(res.body._id, _id)
+                assert.equal(res.body.issue_title, issue_title)
+                assert.equal(res.body.issue_text, newIssue.issue_text)
+                assert.equal(res.body.created_by, newIssue.created_by)
+                assert.equal(res.body.assigned_to, newIssue.assigned_to)
+                assert.equal(res.body.status_text, newIssue.status_text)
+                done()
+              })
+          })
+      })
+
+      test('issue_text = Updated text', function(done) {
+        const newIssue = {
+          issue_title: 'Issue text to be updated',
+          issue_text:  'This is to test PUT request for one field',
+          created_by: 'me',
+          assigned_to: 'me',
+          status_text: 'pending'
+        }
+
+        // Create a new issue
+        chai.request(server)
+          .post('/api/issues/:project')
+          .send(newIssue)
+          .end((err, res) => {
+            if (err) console.error(err)
+
+            const { _id } = res.body
+            const issue_text = 'Updated text'
+            const updatedIssue = {
+              _id,
+              issue_title: '',
+              issue_text,
+              created_by: '',
+              assigned_to: '',
+              status_text: ''
+            }
+
+            // Update the issue
+            chai.request(server)
+              .put('/api/issues/:project')
+              .send(updatedIssue)
+              .end((err, res) => {
+                if (err) console.error(err)
+
+                assert.equal(res.body._id, _id)
+                assert.equal(res.body.issue_title, newIssue.issue_title)
+                assert.equal(res.body.issue_text, issue_text)
+                assert.equal(res.body.created_by, newIssue.created_by)
+                assert.equal(res.body.assigned_to, newIssue.assigned_to)
+                assert.equal(res.body.status_text, newIssue.status_text)
+                done()
+              })
+          })
+      })
+
+      test('created_by = you', function(done) {
+        const newIssue = {
+          issue_title: 'Update owner',
+          issue_text:   'This is to test PUT request for one field',
+          created_by: 'me',
+          assigned_to: 'me',
+          status_text: 'pending'
+        }
+
+        // Create a new issue
+        chai.request(server)
+          .post('/api/issues/:project')
+          .send(newIssue)
+          .end((err, res) => {
+            if (err) console.error(err)
+
+            const { _id } = res.body
+            const created_by = 'you'
+            const updatedIssue = {
+              _id,
+              issue_title: '',
+              issue_text: '',
+              created_by,
+              assigned_to: '',
+              status_text: ''
+            }
+
+            // Update the issue
+            chai.request(server)
+              .put('/api/issues/:project')
+              .send(updatedIssue)
+              .end((err, res) => {
+                if (err) console.error(err)
+
+                assert.equal(res.body._id, _id)
+                assert.equal(res.body.issue_title, newIssue.issue_title)
+                assert.equal(res.body.issue_text, newIssue.issue_text)
+                assert.equal(res.body.created_by, created_by)
+                assert.equal(res.body.assigned_to, newIssue.assigned_to)
+                assert.equal(res.body.status_text, newIssue.status_text)
+                done()
+              })
+          })
+      })
+
+      test('assigned_to = you', function(done) {
+        const newIssue = {
+          issue_title: 'Update assignee',
+          issue_text: 'This is to test PUT request for one field',
+          created_by: 'me',
+          assigned_to: 'me',
+          status_text: 'pending'
+        }
+
+        // Create a new issue
+        chai.request(server)
+          .post('/api/issues/:project')
+          .send(newIssue)
+          .end((err, res) => {
+            if (err) console.error(err)
+
+            const { _id } = res.body
+            const assigned_to = 'you'
+            const updatedIssue = {
+              _id,
+              issue_title: '',
+              issue_text: '',
+              created_by: '',
+              assigned_to: 'you',
+              status_text: ''
+            }
+
+            // Update the issue
+            chai.request(server)
+              .put('/api/issues/:project')
+              .send(updatedIssue)
+              .end((err, res) => {
+                if (err) console.error(err)
+
+                assert.equal(res.body._id, _id)
+                assert.equal(res.body.issue_title, newIssue.issue_title)
+                assert.equal(res.body.issue_text, newIssue.issue_text)
+                assert.equal(res.body.created_by, newIssue.created_by)
+                assert.equal(res.body.assigned_to, assigned_to)
+                assert.equal(res.body.status_text, newIssue.status_text)
+                done()
+              })
+          })
+      })
+
+      test('open = false', function(done) {
+        const newIssue = {
+          issue_title: 'Update status text',
+          issue_text: 'This is to test PUT request for one field',
+          created_by: 'me',
+          assigned_to: 'me',
+          status_text: 'pending'
+        }
+
+        // Create a new issue
+        chai.request(server)
+          .post('/api/issues/:project')
+          .send(newIssue)
+          .end((err, res) => {
+            if (err) console.error(err)
+
+            const { _id } = res.body
+            const open = false
+            const updatedIssue = {
+              _id,
+              issue_title: '',
+              issue_text: '',
+              created_by: '',
+              assigned_to: '',
+              open,
+              status_text: ''
+            }
+
+            // Update the issue
+            chai.request(server)
+              .put('/api/issues/:project')
+              .send(updatedIssue)
+              .end((err, res) => {
+                if (err) console.error(err)
+
+                assert.equal(res.body._id, _id)
+                assert.equal(res.body.issue_title, newIssue.issue_title)
+                assert.equal(res.body.issue_text, newIssue.issue_text)
+                assert.equal(res.body.created_by, newIssue.created_by)
+                assert.equal(res.body.assigned_to, newIssue.assigned_to)
+                assert.equal(res.body.open, open)
+                assert.equal(res.body.status_text, newIssue.status_text)
+                done()
+              })
+          })
+      })
+
+      test('status_text = closed', function(done) {
+        const newIssue = {
+          issue_title: 'Update status text',
+          issue_text: 'This is to test PUT request for one field',
+          created_by: 'me',
+          assigned_to: 'me',
+          status_text: 'pending'
+        }
+
+        // Create a new issue
+        chai.request(server)
+          .post('/api/issues/:project')
+          .send(newIssue)
+          .end((err, res) => {
+            if (err) console.error(err)
+
+            const { _id } = res.body
+            const status_text = 'closed'
+            const updatedIssue = {
+              _id,
+              issue_title: '',
+              issue_text: '',
+              created_by: '',
+              assigned_to: '',
+              status_text: 'closed'
+            }
+
+            // Update the issue
+            chai.request(server)
+              .put('/api/issues/:project')
+              .send(updatedIssue)
+              .end((err, res) => {
+                if (err) console.error(err)
+
+                assert.equal(res.body._id, _id)
+                assert.equal(res.body.issue_title, newIssue.issue_title)
+                assert.equal(res.body.issue_text, newIssue.issue_text)
+                assert.equal(res.body.created_by, newIssue.created_by)
+                assert.equal(res.body.assigned_to, newIssue.assigned_to)
+                assert.equal(res.body.status_text, status_text)
+                done()
+              })
+          })
+      })
+    })
+
+    suite('Update multiple fields on an issue: PUT request to /api/issues/{project}', function() {
+      test('Update every field', function(done) {
+        const newIssue = {
+          issue_title: 'Update multiple fields on an issue',
+          issue_text: 'This is to test PUT request for one field',
+          created_by: 'me',
+          assigned_to: 'me',
+          status_text: 'pending'
+        }
+
+        // Create a new issue
+        chai.request(server)
+          .post('/api/issues/:project')
+          .send(newIssue)
+          .end((err, res) => {
+            if (err) console.error(err)
+
+            const { _id } = res.body
+            const updatedIssue = {
+              _id,
+              issue_title: 'Update multiple fields',
+              issue_text: 'Every fields have been updated',
+              created_by: 'you',
+              assigned_to: 'you',
+              open: false,
+              status_text: 'closed'
+            }
+
+            // Update the issue
+            chai.request(server)
+              .put('/api/issues/:project')
+              .send(updatedIssue)
+              .end((err, res) => {
+                if (err) console.error(err)
+
+                assert.equal(res.body._id, _id)
+                assert.equal(res.body.issue_title, updatedIssue.issue_title)
+                assert.equal(res.body.issue_text, updatedIssue.issue_text)
+                assert.equal(res.body.created_by, updatedIssue.created_by)
+                assert.equal(res.body.assigned_to, updatedIssue.assigned_to)
+                assert.equal(res.body.status_text, updatedIssue.status_text)
+                done()
+              })
+          })
+      })
+    })
+
+    suite('Update an issue with missing _id: PUT request to /api/issues/{project}', function() {
+      test('Missing _id should return an error', function(done) {
+        const updatedIssue = {
+          issue_title: 'Missing _id',
+          issue_text: 'No issue will be updated',
+          created_by: 'you',
+          assigned_to: 'you',
+          open: false,
+          status_text: 'closed'
+        }
+        chai.request(server)
+          .put('/api/issues/:project')
+          .send(updatedIssue)
+          .end((err, res) => {
+            if (err) console.error(err)
+
+            assert.exists(res.error)
+            done()
+          })
+      })
+    })
+
+    suite('Update an issue with no fields to update: PUT request to /api/issues/{project}', function() {
+      test('No fields should be updated', function (done) {
+        const newIssue = {
+          issue_title: 'No field to updated',
+          issue_text: 'Every field should remain the same',
+          created_by: 'you',
+          assigned_to: 'you',
+          status_text: 'pending'
+        }
+
+        // Create a new issue
+        chai.request(server)
+          .post('/api/issues/:project')
+          .send(newIssue)
+          .end((err, res) => {
+            if (err) console.error(err)
+
+            const { _id } = res.body
+            const updatedIssue = {
+              _id,
+              issue_title: '',
+              issue_text: '',
+              created_by: '',
+              assigned_to: '',
+              status_text: ''
+            }
+
+            // Update the issue
+            chai.request(server)
+              .put('/api/issues/:project')
+              .send(updatedIssue)
+              .end((err, res) => {
+                if (err) console.error(err)
+
+                assert.include(res.body, newIssue)
+                done()
+              })
+          })
+      })
+    })
+
+    suite('Update an issue with an invalid _id: PUT request to /api/issues/{project}', function() {
+      test('An invalid _id should return an error', function(done) {
+        const updatedIssue = {
+          _id: 'THIS ID IS CERTAINLY NOT VALID',
+          issue_title: 'No field to updated',
+          issue_text: 'Every field should remain the same',
+          created_by: 'you',
+          assigned_to: 'you',
+          status_text: 'pending'
+        }
+
+        // Update the issue
+        chai.request(server)
+          .put('/api/issues/:project')
+          .send(updatedIssue)
+          .end((err, res) => {
+            if (err) console.error(err)
+
+            assert.exists(res.error)
+            done()
+          })
+      })
+    })
+  })
 });
