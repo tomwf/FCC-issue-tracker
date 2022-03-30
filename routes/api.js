@@ -99,9 +99,39 @@ module.exports = function (app) {
         .catch(err => res.send(err))
     })
 
-    .put(function (req, res){
+    .put(function (req, res, next){
       let project = req.params.project;
 
+      const {
+        _id,
+        issue_title,
+        issue_text,
+        created_by,
+        assigned_to,
+        status_text,
+        open
+      } = req.body
+
+      mongoose.connect(MONGO_URI)
+
+      Issue.findById(_id, (err, issue) => {
+        if (err) console.error(err)
+
+        try {
+          if (issue_title) issue.issue_title = issue_title
+          if (issue_text) issue.issue_text = issue_text
+          if (created_by) issue.created_by = created_by
+          if (assigned_to) issue.assigned_to = assigned_to
+          if (status_text) issue.status_text = status_text
+          if (open !== undefined) issue.open = open
+
+          issue.save()
+            .then(response => res.send(response))
+            .catch(err => res.send(err))
+        } catch(err) {
+          next(err)
+        }
+      })
     })
 
     .delete(function (req, res){
