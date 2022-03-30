@@ -766,4 +766,67 @@ suite('Functional Tests', function() {
       })
     })
   })
+
+  suite('Test DELETE request', function() {
+    test('Delete an issue: DELETE request to /api/issues/{project}', function(done) {
+      const newIssue = {
+        issue_title: 'Delete issue',
+        issue_text: 'This issue should be deleted right after its creation',
+        created_by: 'me',
+        assigned_to: 'me',
+        status_text: 'pending'
+      }
+
+      // Create a new issue
+      chai.request(server)
+        .post('/api/issues/:project')
+        .send(newIssue)
+        .end((err, res) => {
+          if (err) console.error(err)
+
+          const { _id } = res.body
+
+          // Delete the issue
+          chai.request(server)
+            .delete('/api/issues/:project')
+            .send({ _id })
+            .end((err, res) => {
+              if (err) console.error(err)
+
+              assert.include(res.body, newIssue)
+              done()
+            })
+        })
+    })
+
+    test('Delete an issue with an invalid _id: DELETE request to /api/issues/{project}', function(done) {
+      const _id = { _id: 'a bunch of non sense' }
+
+      // Delete issue
+      chai.request(server)
+        .delete('/api/issues/:project')
+        .send({ _id })
+        .end((err, res) => {
+          if (err) console.error(err)
+
+          assert.isEmpty(res.body)
+          done()
+        })
+    })
+
+    test('Delete an issue with missing _id: DELETE request to /api/issues/{project}', function(done) {
+      const _id = { _id: '' }
+
+      // Delete issue
+      chai.request(server)
+        .delete('/api/issues/:project')
+        .send({ _id })
+        .end((err, res) => {
+          if (err) console.error(res)
+
+          assert.isEmpty(res.body)
+          done()
+        })
+    })
+  })
 });
