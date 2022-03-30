@@ -338,7 +338,7 @@ suite('Functional Tests', function() {
         const open = false
 
         chai.request(server)
-          .get(`/api/issues/:project??created_by=${created_by}&open=${open}`)
+          .get(`/api/issues/:project?created_by=${created_by}&open=${open}`)
           .end((err, res) => {
             if (err) console.error(err)
 
