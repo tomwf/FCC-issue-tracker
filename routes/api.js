@@ -70,7 +70,6 @@ module.exports = function (app) {
 
     .post(function (req, res){
       let project = req.params.project;
-      const body = req.body
       const {
         issue_title,
         issue_text,
