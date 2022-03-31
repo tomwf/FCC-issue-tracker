@@ -71,9 +71,7 @@ suite('Functional Tests', function() {
         .end((err, res) => {
           if (err) console.error(err)
 
-          const body = res.body
-
-          assert.exists(body.errors)
+          assert.deepEqual(res.body, { error: 'required field(s) missing' })
           done()
         })
     })
