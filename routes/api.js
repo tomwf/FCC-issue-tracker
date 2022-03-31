@@ -78,7 +78,7 @@ module.exports = function (app) {
         open,
         status_text
       } = req.body
-      const date = new Date().toISOString()
+      const date = new Date()
 
       mongoose.connect(MONGO_URI)
 
