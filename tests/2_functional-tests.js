@@ -7,7 +7,9 @@ chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
   suite('Test POST requests', function() {
+    this.timeout(5000)
     test('Create an issue with every field: POST request to /api/issues/{project}', function(done) {
+      setTimeout(done, 3000)
       const issue = {
         issue_title: 'Test issue with every field',
         issue_text: 'This issue is to test that every field is filled',
@@ -28,6 +30,7 @@ suite('Functional Tests', function() {
     })
 
     test('Create an issue with only required fields: POST request to /api/issues/{project}', function(done) {
+      setTimeout(done, 3000)
       const issue  = {
         issue_title: 'Test issue with only required field',
         issue_text: 'This issue is to test that only the required fields are filled',
@@ -52,7 +55,6 @@ suite('Functional Tests', function() {
           assert.exists(body.assigned_to)
           assert.isTrue(body.open)
           assert.exists(body.status_text)
-          done()
         })
     })
 
@@ -79,6 +81,8 @@ suite('Functional Tests', function() {
 
   suite('Test GET requests', function() {
     test('View issues on a project: GET request to /api/issues/{project}', function(done) {
+      this.timeout(5000)
+      setTimeout(done, 2000)
       chai.request(server)
         .get('/api/issues/:project')
         .end((err, res) => {
@@ -102,7 +106,6 @@ suite('Functional Tests', function() {
             assert.property(issue, 'open')
             assert.property(issue, 'status_text')
           }
-          done()
         })
     })
 
