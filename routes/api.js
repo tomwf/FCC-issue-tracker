@@ -88,9 +88,9 @@ module.exports = function (app) {
         created_on: date,
         updated_on: date,
         created_by,
-        assigned_to,
+        assigned_to: assigned_to === undefined ? '' : assigned_to,
         open: open === undefined ? true : open,
-        status_text
+        status_text: status_text === undefined ? '' : status_text
       })
 
       newIssue.save()
