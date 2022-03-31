@@ -89,18 +89,18 @@ suite('Functional Tests', function() {
           assert.isArray(body)
 
           if (body.length > 0) {
-            body.forEach(issue => {
-              assert.isObject(issue)
-              assert.property(issue, '_id')
-              assert.property(issue, 'issue_title')
-              assert.property(issue, 'issue_text')
-              assert.property(issue, 'created_on')
-              assert.property(issue, 'updated_on')
-              assert.property(issue, 'created_by')
-              assert.property(issue, 'assigned_to')
-              assert.property(issue, 'open')
-              assert.property(issue, 'status_text')
-            })
+            const issue = body[body.length - 1]
+
+            assert.isObject(issue)
+            assert.property(issue, '_id')
+            assert.property(issue, 'issue_title')
+            assert.property(issue, 'issue_text')
+            assert.property(issue, 'created_on')
+            assert.property(issue, 'updated_on')
+            assert.property(issue, 'created_by')
+            assert.property(issue, 'assigned_to')
+            assert.property(issue, 'open')
+            assert.property(issue, 'status_text')
           }
           done()
         })
