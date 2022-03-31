@@ -95,7 +95,7 @@ module.exports = function (app) {
 
       newIssue.save()
         .then(response => res.send(response))
-        .catch(err => res.send(err))
+        .catch(err => res.send({ error: 'required field(s) missing' }))
     })
 
     .put(function (req, res, next){
@@ -146,5 +146,4 @@ module.exports = function (app) {
         res.send(issue)
       })
     });
-
 };
