@@ -11,8 +11,8 @@ suite('Functional Tests', function() {
       const issue = {
         issue_title: 'Test issue with every field',
         issue_text: 'This issue is to test that every field is filled',
-        created_by: 'test_user',
-        assigned_to: 'test_user',
+        created_by: 'me',
+        assigned_to: 'me',
         status_text: 'pending'
       }
 
@@ -41,7 +41,7 @@ suite('Functional Tests', function() {
       const issue  = {
         issue_title: 'Test issue with only required field',
         issue_text: 'This issue is to test that only the required fields are filled',
-        created_by: 'test_user',
+        created_by: 'me',
         assigned_to: '',
         status_text: ''
       }
@@ -226,17 +226,18 @@ suite('Functional Tests', function() {
 
       test('?assigned_to=me', function(done) {
         const assigned_to = 'me'
+        const newIssue = {
+          issue_title: 'Test 4',
+          issue_text:  'This is to test GET request with one filter',
+          created_by: 'me',
+          assigned_to,
+          status_text: 'pending'
+        }
 
         // Create a test issue
         chai.request(server)
           .post('/api/issues/:project')
-          .send({
-            issue_title: 'Test 4',
-            issue_text:  'This is to test GET request with one filter',
-            created_by: 'me',
-            assigned_to,
-            status_text: 'pending'
-          })
+          .send(newIssue)
           .end((err, res) => {
             if (err) console.error(err)
 
