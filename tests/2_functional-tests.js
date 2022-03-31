@@ -22,17 +22,7 @@ suite('Functional Tests', function() {
         .end((err, res) => {
           if (err) console.error(err)
 
-          const body = res.body
-
-          assert.exists(body._id)
-          assert.exists(body.created_on)
-          assert.exists(body.updated_on)
-          assert.equal(body.issue_title, issue.issue_title)
-          assert.equal(body.issue_text, issue.issue_text)
-          assert.equal(body.created_by, issue.created_by)
-          assert.equal(body.assigned_to, issue.assigned_to)
-          assert.isTrue(body.open)
-          assert.equal(body.status_text, issue.status_text)
+          assert.include(res.body, issue)
           done()
         })
     })
