@@ -119,13 +119,8 @@ module.exports = function (app) {
         .catch(err => res.send({ error: 'required field(s) missing' }))
     })
 
-    .put(function (req, res, next){
-      let project = req.params.project ? req.params.project : 'apitest';
-
-      if (!models.hasOwnProperty(project)) {
-        models[project] = mongoose.model(project, issueSchema)
-      }
-
+    .put(function (req, res){
+      let project = req.params.project
       const {
         _id,
         issue_title,
@@ -136,24 +131,57 @@ module.exports = function (app) {
         open
       } = req.body
 
-      Issue = models[project]
-      Issue.findById(_id, (err, issue) => {
-        if (err) console.error(err)
+      // Empty _id input
+      if(!_id) return res.send({ error: 'missing _id' })
 
-        try {
-          if (issue_title) issue.issue_title = issue_title
-          if (issue_text) issue.issue_text = issue_text
-          if (created_by) issue.created_by = created_by
-          if (assigned_to) issue.assigned_to = assigned_to
-          if (status_text) issue.status_text = status_text
-          if (open !== undefined) issue.open = open
+      // Missing update field
+      if (
+        issue_title === undefined || issue_text === undefined
+        || created_by === undefined || assigned_to === undefined
+        || status_text === undefined
+      ) {
+        return res.send({ error: 'no update field(s) sent', _id })
+      }
 
-          issue.save()
-            .then(response => res.send(response))
-            .catch(err => res.send(err))
-        } catch(err) {
-          next(err)
-        }
+      // Empty field input
+      if (
+        !issue_title && !issue_text
+        && !created_by && !assigned_to
+        && !status_text && open === undefined
+      ) {
+        return res.send({ error: 'could not update', _id })
+      }
+
+      // Choose model
+      try {
+        Issue = mongoose.model(project, issueSchema)
+        models[project] = Issue
+      } catch(e) {
+        console.log('Current model: ' + project)
+      } finally {
+        Issue = models[project]
+      }
+
+      Issue.findById(_id, (err, doc) => {
+        // Invalid _id format
+        if (err || !doc) return res.send({ error: 'could not update', _id })
+
+        // Update fields
+        if (issue_title) doc.issue_title = issue_title
+        if (issue_text) doc.issue_text = issue_text
+        if (created_by) doc.created_by = created_by
+        if (assigned_to) doc.assigned_to = assigned_to
+        if (status_text) doc.status_text = status_text
+        if (open !== undefined) doc.open = open
+
+        // Update date
+        doc.updated_on = new Date()
+
+        doc.save((err, response) => {
+          if (err) console.error(err)
+
+          res.send({ result: 'successfully updated', _id })
+        })
       })
     })
 
