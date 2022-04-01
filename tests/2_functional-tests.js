@@ -19,7 +19,7 @@ suite('Functional Tests', function() {
       }
 
       chai.request(server)
-        .post('/api/issues/:project')
+        .post('/api/issues/apitest')
         .send(issue)
         .end((err, res) => {
           if (err) console.error(err)
@@ -39,7 +39,7 @@ suite('Functional Tests', function() {
       }
 
       chai.request(server)
-        .post('/api/issues/:project')
+        .post('/api/issues/apitest')
         .send(issue)
         .end((err, res) => {
           if (err) console.error(err)
@@ -67,7 +67,7 @@ suite('Functional Tests', function() {
       }
 
       chai.request(server)
-        .post('/api/issues/:project')
+        .post('/api/issues/apitest')
         .send(issue)
         .end((err, res) => {
           if (err) console.error(err)
@@ -83,7 +83,7 @@ suite('Functional Tests', function() {
       this.timeout(5000)
       setTimeout(done, 2000)
       chai.request(server)
-        .get('/api/issues/:project')
+        .get('/api/issues/apitest')
         .end((err, res) => {
           if (err) console.error(err)
 
@@ -114,7 +114,7 @@ suite('Functional Tests', function() {
 
         // Create a test issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send({
             issue_title,
             issue_text: 'This is to test GET request with one filter',
@@ -127,7 +127,7 @@ suite('Functional Tests', function() {
 
             // View filtered issues
             chai.request(server)
-              .get(`/api/issues/:project?issue_title=${issue_title}`)
+              .get(`/api/issues/apitest?issue_title=${issue_title}`)
               .end((err, res) => {
                 if (err) console.error(err)
 
@@ -149,7 +149,7 @@ suite('Functional Tests', function() {
 
         // Create a test issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send({
             issue_title: 'Test 2',
             issue_text,
@@ -162,7 +162,7 @@ suite('Functional Tests', function() {
 
             // View filtered issues
             chai.request(server)
-              .get(`/api/issues/:project?issue_text=${issue_text}`)
+              .get(`/api/issues/apitest?issue_text=${issue_text}`)
               .end((err, res) => {
                 if (err) console.error(err)
 
@@ -184,7 +184,7 @@ suite('Functional Tests', function() {
 
         // Create a test issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send({
             issue_title: 'Test 3',
             issue_text:  'This is to test GET request with one filter',
@@ -197,7 +197,7 @@ suite('Functional Tests', function() {
 
             // View filtered issues
             chai.request(server)
-              .get(`/api/issues/:project?created_by=${created_by}`)
+              .get(`/api/issues/apitest?created_by=${created_by}`)
               .end((err, res) => {
                 if (err) console.error(err)
 
@@ -226,14 +226,14 @@ suite('Functional Tests', function() {
 
         // Create a test issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send(newIssue)
           .end((err, res) => {
             if (err) console.error(err)
 
             // View filtered issues
             chai.request(server)
-              .get(`/api/issues/:project?assigned_to=${assigned_to}`)
+              .get(`/api/issues/apitest?assigned_to=${assigned_to}`)
               .end((err, res) => {
                 if (err) console.error(err)
 
@@ -255,7 +255,7 @@ suite('Functional Tests', function() {
 
         // Create a test issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send({
             issue_title: 'Test 5',
             issue_text:  'This is to test GET request with one filter',
@@ -269,7 +269,7 @@ suite('Functional Tests', function() {
 
             // View filtered issues
             chai.request(server)
-              .get(`/api/issues/:project?open=${open}`)
+              .get(`/api/issues/apitest?open=${open}`)
               .end((err, res) => {
                 if (err) console.error(err)
 
@@ -291,7 +291,7 @@ suite('Functional Tests', function() {
 
         // Create a test issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send({
             issue_title: 'Test 6',
             issue_text:  'This is to test GET request with one filter',
@@ -305,7 +305,7 @@ suite('Functional Tests', function() {
 
             // View filtered issues
             chai.request(server)
-              .get(`/api/issues/:project?status_text=${status_text}`)
+              .get(`/api/issues/apitest?status_text=${status_text}`)
               .end((err, res) => {
                 if (err) console.error(err)
 
@@ -329,7 +329,7 @@ suite('Functional Tests', function() {
         const open = false
 
         chai.request(server)
-          .get(`/api/issues/:project?created_by=${created_by}&open=${open}`)
+          .get(`/api/issues/apitest?created_by=${created_by}&open=${open}`)
           .end((err, res) => {
             if (err) console.error(err)
 
@@ -361,7 +361,7 @@ suite('Functional Tests', function() {
 
         // Create a test issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send(newIssue)
           .end((err, res) => {
             if (err) console.error(err)
@@ -379,7 +379,7 @@ suite('Functional Tests', function() {
 
             // Update the issue
             chai.request(server)
-              .put('/api/issues/:project')
+              .put('/api/issues/apitest')
               .send(updatedIssue)
               .end((err, res) => {
                 if (err) console.error(err)
@@ -406,7 +406,7 @@ suite('Functional Tests', function() {
 
         // Create a new issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send(newIssue)
           .end((err, res) => {
             if (err) console.error(err)
@@ -424,7 +424,7 @@ suite('Functional Tests', function() {
 
             // Update the issue
             chai.request(server)
-              .put('/api/issues/:project')
+              .put('/api/issues/apitest')
               .send(updatedIssue)
               .end((err, res) => {
                 if (err) console.error(err)
@@ -451,7 +451,7 @@ suite('Functional Tests', function() {
 
         // Create a new issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send(newIssue)
           .end((err, res) => {
             if (err) console.error(err)
@@ -469,7 +469,7 @@ suite('Functional Tests', function() {
 
             // Update the issue
             chai.request(server)
-              .put('/api/issues/:project')
+              .put('/api/issues/apitest')
               .send(updatedIssue)
               .end((err, res) => {
                 if (err) console.error(err)
@@ -496,7 +496,7 @@ suite('Functional Tests', function() {
 
         // Create a new issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send(newIssue)
           .end((err, res) => {
             if (err) console.error(err)
@@ -514,7 +514,7 @@ suite('Functional Tests', function() {
 
             // Update the issue
             chai.request(server)
-              .put('/api/issues/:project')
+              .put('/api/issues/apitest')
               .send(updatedIssue)
               .end((err, res) => {
                 if (err) console.error(err)
@@ -541,7 +541,7 @@ suite('Functional Tests', function() {
 
         // Create a new issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send(newIssue)
           .end((err, res) => {
             if (err) console.error(err)
@@ -560,7 +560,7 @@ suite('Functional Tests', function() {
 
             // Update the issue
             chai.request(server)
-              .put('/api/issues/:project')
+              .put('/api/issues/apitest')
               .send(updatedIssue)
               .end((err, res) => {
                 if (err) console.error(err)
@@ -588,7 +588,7 @@ suite('Functional Tests', function() {
 
         // Create a new issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send(newIssue)
           .end((err, res) => {
             if (err) console.error(err)
@@ -606,7 +606,7 @@ suite('Functional Tests', function() {
 
             // Update the issue
             chai.request(server)
-              .put('/api/issues/:project')
+              .put('/api/issues/apitest')
               .send(updatedIssue)
               .end((err, res) => {
                 if (err) console.error(err)
@@ -635,7 +635,7 @@ suite('Functional Tests', function() {
 
         // Create a new issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send(newIssue)
           .end((err, res) => {
             if (err) console.error(err)
@@ -653,7 +653,7 @@ suite('Functional Tests', function() {
 
             // Update the issue
             chai.request(server)
-              .put('/api/issues/:project')
+              .put('/api/issues/apitest')
               .send(updatedIssue)
               .end((err, res) => {
                 if (err) console.error(err)
@@ -681,7 +681,7 @@ suite('Functional Tests', function() {
           status_text: 'closed'
         }
         chai.request(server)
-          .put('/api/issues/:project')
+          .put('/api/issues/apitest')
           .send(updatedIssue)
           .end((err, res) => {
             if (err) console.error(err)
@@ -704,7 +704,7 @@ suite('Functional Tests', function() {
 
         // Create a new issue
         chai.request(server)
-          .post('/api/issues/:project')
+          .post('/api/issues/apitest')
           .send(newIssue)
           .end((err, res) => {
             if (err) console.error(err)
@@ -721,7 +721,7 @@ suite('Functional Tests', function() {
 
             // Update the issue
             chai.request(server)
-              .put('/api/issues/:project')
+              .put('/api/issues/apitest')
               .send(updatedIssue)
               .end((err, res) => {
                 if (err) console.error(err)
@@ -746,7 +746,7 @@ suite('Functional Tests', function() {
 
         // Update the issue
         chai.request(server)
-          .put('/api/issues/:project')
+          .put('/api/issues/apitest')
           .send(updatedIssue)
           .end((err, res) => {
             if (err) console.error(err)
@@ -770,7 +770,7 @@ suite('Functional Tests', function() {
 
       // Create a new issue
       chai.request(server)
-        .post('/api/issues/:project')
+        .post('/api/issues/apitest')
         .send(newIssue)
         .end((err, res) => {
           if (err) console.error(err)
@@ -779,7 +779,7 @@ suite('Functional Tests', function() {
 
           // Delete the issue
           chai.request(server)
-            .delete('/api/issues/:project')
+            .delete('/api/issues/apitest')
             .send({ _id })
             .end((err, res) => {
               if (err) console.error(err)
@@ -795,7 +795,7 @@ suite('Functional Tests', function() {
 
       // Delete issue
       chai.request(server)
-        .delete('/api/issues/:project')
+        .delete('/api/issues/apitest')
         .send({ _id })
         .end((err, res) => {
           if (err) console.error(err)
@@ -810,7 +810,7 @@ suite('Functional Tests', function() {
 
       // Delete issue
       chai.request(server)
-        .delete('/api/issues/:project')
+        .delete('/api/issues/apitest')
         .send({ _id })
         .end((err, res) => {
           if (err) console.error(res)
