@@ -174,10 +174,11 @@ module.exports = function (app) {
         Issue = models[project]
       }
 
-      Issue.findByIdAndDelete(_id, (err, issue) => {
-        if (err) console.error(err)
+      Issue.findByIdAndDelete(_id, (err, doc) => {
+        // Invalid _id format
+        if (err || !doc) return res.send({ error: 'could not delete', _id })
 
-        res.send(issue)
+        res.send({ result: 'successfully deleted', _id })
       })
     });
 };
