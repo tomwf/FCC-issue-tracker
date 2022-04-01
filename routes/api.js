@@ -81,12 +81,7 @@ module.exports = function (app) {
     })
 
     .post(function (req, res){
-      let project = req.params.project ? req.params.project : 'apitest';
-
-      if (!models.hasOwnProperty(project)) {
-        models[project] = mongoose.model(project, issueSchema)
-      }
-
+      let project = req.params.project
       const {
         issue_title,
         issue_text,
@@ -97,7 +92,17 @@ module.exports = function (app) {
       } = req.body
       const date = new Date()
 
-      Issue = models[project]
+      // Choose model
+      try {
+        Issue = mongoose.model(project, issueSchema)
+        models[project] = Issue
+      } catch(e) {
+        console.log('Current model: ' + project)
+      } finally {
+        Issue = models[project]
+      }
+
+      // Instantiate a new issue
       const newIssue = new Issue({
         issue_title,
         issue_text,
