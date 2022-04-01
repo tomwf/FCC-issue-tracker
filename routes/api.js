@@ -1,35 +1,40 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const { Schema } = mongoose
 const MONGO_URI = process.env.MONGO_URI
 
-//Issue model
-const Issue = mongoose.model('Issue', {
-  issue_title: {
-    type: String,
-    required: true
-  },
-  issue_text: {
-    type: String,
-    required: true
-  },
-  created_on: Date,
-  updated_on: Date,
-  created_by: {
-    type: String,
-    required: true
-  },
-  assigned_to: String,
-  open: Boolean,
-  status_text: String
-})
-
 module.exports = function (app) {
+
+  let Issue
+  const models = {}
+  const issueSchema = {
+    issue_title: {
+      type: String,
+      required: true
+    },
+    issue_text: {
+      type: String,
+      required: true
+    },
+    created_on: Date,
+    updated_on: Date,
+    created_by: {
+      type: String,
+      required: true
+    },
+    assigned_to: String,
+    open: Boolean,
+    status_text: String
+  }
+
+  mongoose.connect(MONGO_URI)
 
   app.route('/api/issues/:project')
 
     .get(function (req, res){
-      let project = req.params.project;
+      let project = req.params.project ? req.params.project : 'apitest';
+      console.log(project)
       const {
         issue_title,
         issue_text,
@@ -39,8 +44,7 @@ module.exports = function (app) {
         status_text
       } = req.query
 
-      mongoose.connect(MONGO_URI)
-
+      Issue = models[project]
       Issue.find((err, docs) => {
         if (err) console.error(err)
 
@@ -64,12 +68,17 @@ module.exports = function (app) {
           result = result.filter(issue => issue.status_text === status_text)
         }
 
-        res.json(result)
+        res.send(result)
       })
     })
 
     .post(function (req, res){
-      let project = req.params.project;
+      let project = req.params.project ? req.params.project : 'apitest';
+
+      if (!models.hasOwnProperty(project)) {
+        models[project] = mongoose.model(project, issueSchema)
+      }
+
       const {
         issue_title,
         issue_text,
@@ -80,8 +89,7 @@ module.exports = function (app) {
       } = req.body
       const date = new Date()
 
-      mongoose.connect(MONGO_URI)
-
+      Issue = models[project]
       const newIssue = new Issue({
         issue_title,
         issue_text,
@@ -99,7 +107,11 @@ module.exports = function (app) {
     })
 
     .put(function (req, res, next){
-      let project = req.params.project;
+      let project = req.params.project ? req.params.project : 'apitest';
+
+      if (!models.hasOwnProperty(project)) {
+        models[project] = mongoose.model(project, issueSchema)
+      }
 
       const {
         _id,
@@ -111,8 +123,7 @@ module.exports = function (app) {
         open
       } = req.body
 
-      mongoose.connect(MONGO_URI)
-
+      Issue = models[project]
       Issue.findById(_id, (err, issue) => {
         if (err) console.error(err)
 
@@ -134,12 +145,15 @@ module.exports = function (app) {
     })
 
     .delete(function (req, res){
-      let project = req.params.project;
+      let project = req.params.project ? req.params.project : 'apitest';
+
+      if (!models.hasOwnProperty(project)) {
+        models[project] = mongoose.model(project, issueSchema)
+      }
 
       const { _id } = req.body
 
-      mongoose.connect(MONGO_URI)
-
+      Issue = models[project]
       Issue.findByIdAndDelete(_id, (err, issue) => {
         if (err) console.error(err)
 
