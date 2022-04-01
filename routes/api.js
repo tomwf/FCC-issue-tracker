@@ -158,15 +158,22 @@ module.exports = function (app) {
     })
 
     .delete(function (req, res){
-      let project = req.params.project ? req.params.project : 'apitest';
-
-      if (!models.hasOwnProperty(project)) {
-        models[project] = mongoose.model(project, issueSchema)
-      }
-
+      let project = req.params.project
       const { _id } = req.body
 
-      Issue = models[project]
+      // Missing _id
+      if (!_id) return res.send({ error: 'missing _id' })
+
+      // Choose model
+      try {
+        Issue = mongoose.model(project, issueSchema)
+        models[project] = Issue
+      } catch(e) {
+        //console.log('Current model: ' + project)
+      } finally {
+        Issue = models[project]
+      }
+
       Issue.findByIdAndDelete(_id, (err, issue) => {
         if (err) console.error(err)
 
