@@ -33,8 +33,7 @@ module.exports = function (app) {
   app.route('/api/issues/:project')
 
     .get(function (req, res){
-      let project = req.params.project ? req.params.project : 'apitest';
-      console.log(project)
+      let project = req.params.project
       const {
         issue_title,
         issue_text,
@@ -44,7 +43,16 @@ module.exports = function (app) {
         status_text
       } = req.query
 
-      Issue = models[project]
+      // Choose model
+      try {
+        Issue = mongoose.model(project, issueSchema)
+        models[project] = Issue
+      } catch(e) {
+        console.log('Current model: ' + project)
+      } finally {
+        Issue = models[project]
+      }
+
       Issue.find((err, docs) => {
         if (err) console.error(err)
 
