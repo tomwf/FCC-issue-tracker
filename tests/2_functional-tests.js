@@ -765,17 +765,17 @@ suite('Functional Tests', function() {
           .end((err, res) => {
             if (err) console.error(err)
 
-            assert.exists(res.error)
+            assert.deepEqual(res.body, { error: 'missing _id' })
             done()
           })
       })
     })
 
     suite('Update an issue with no fields to update: PUT request to /api/issues/{project}', function() {
-      test('No fields should be updated', function (done) {
+      test('Empty fields updated', function (done) {
         const newIssue = {
-          issue_title: 'No field to updated',
-          issue_text: 'Every field should remain the same',
+          issue_title: 'Empty fields updated',
+          issue_text: 'Fields will be emptied',
           created_by: 'you',
           assigned_to: 'you',
           status_text: 'pending'
@@ -805,7 +805,7 @@ suite('Functional Tests', function() {
               .end((err, res) => {
                 if (err) console.error(err)
 
-                assert.include(res.body, newIssue)
+                assert.deepEqual(res.body, { result: 'successfully updated', _id })
                 done()
               })
           })
