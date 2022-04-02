@@ -137,22 +137,13 @@ module.exports = function (app) {
       // Empty _id input
       if(!_id) return res.send({ error: 'missing _id' })
 
-      // Missing update field
+      // Missing field(s)
       if (
         issue_title === undefined || issue_text === undefined
         || created_by === undefined || assigned_to === undefined
         || status_text === undefined
       ) {
         return res.send({ error: 'no update field(s) sent', _id })
-      }
-
-      // Empty field input
-      if (
-        !issue_title && !issue_text
-        && !created_by && !assigned_to
-        && !status_text && open === undefined
-      ) {
-        return res.send({ error: 'could not update', _id })
       }
 
       // Choose model
@@ -170,14 +161,12 @@ module.exports = function (app) {
         if (err || !doc) return res.send({ error: 'could not update', _id })
 
         // Update fields
-        if (issue_title) doc.issue_title = issue_title
-        if (issue_text) doc.issue_text = issue_text
-        if (created_by) doc.created_by = created_by
-        if (assigned_to) doc.assigned_to = assigned_to
-        if (status_text) doc.status_text = status_text
-        if (open !== undefined) doc.open = open
-
-        // Update date
+        doc.issue_title = issue_title ? issue_title : ''
+        doc.issue_text = issue_text ? issue_text : ''
+        doc.created_by = created_by ? created_by : ''
+        doc.assigned_to = assigned_to ? assigned_to : ''
+        doc.status_text = status_text ? status_text : ''
+        doc.open = open === undefined ? doc.open : open
         doc.updated_on = new Date()
 
         doc.save((err, response) => {
