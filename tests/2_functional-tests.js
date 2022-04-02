@@ -814,8 +814,9 @@ suite('Functional Tests', function() {
 
     suite('Update an issue with an invalid _id: PUT request to /api/issues/{project}', function() {
       test('An invalid _id should return an error', function(done) {
+        const _id = 'THIS ID IS CERTAINLY NOT VALID'
         const updatedIssue = {
-          _id: 'THIS ID IS CERTAINLY NOT VALID',
+          _id,
           issue_title: 'No field to updated',
           issue_text: 'Every field should remain the same',
           created_by: 'you',
@@ -830,7 +831,7 @@ suite('Functional Tests', function() {
           .end((err, res) => {
             if (err) console.error(err)
 
-            assert.exists(res.error)
+            assert.deepEqual(res.body, { error: 'could not update', _id })
             done()
           })
       })
