@@ -784,7 +784,7 @@ suite('Functional Tests', function() {
             .end((err, res) => {
               if (err) console.error(err)
 
-              assert.include(res.body, newIssue)
+              assert.include(res.body, { result: 'successfully deleted', _id })
               done()
             })
         })
@@ -800,22 +800,20 @@ suite('Functional Tests', function() {
         .end((err, res) => {
           if (err) console.error(err)
 
-          assert.isEmpty(res.body)
+          assert.deepEqual(res.body, { error: 'could not delete', _id })
           done()
         })
     })
 
     test('Delete an issue with missing _id: DELETE request to /api/issues/{project}', function(done) {
-      const _id = { _id: '' }
-
       // Delete issue
       chai.request(server)
         .delete('/api/issues/apitest')
-        .send({ _id })
+        .send({ foo: 'bar' })
         .end((err, res) => {
           if (err) console.error(res)
 
-          assert.isEmpty(res.body)
+          assert.deepEqual(res.body, { error: 'missing _id' })
           done()
         })
     })
