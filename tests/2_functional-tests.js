@@ -384,13 +384,25 @@ suite('Functional Tests', function() {
               .end((err, res) => {
                 if (err) console.error(err)
 
-                assert.equal(res.body._id, _id)
-                assert.equal(res.body.issue_title, issue_title)
-                assert.equal(res.body.issue_text, newIssue.issue_text)
-                assert.equal(res.body.created_by, newIssue.created_by)
-                assert.equal(res.body.assigned_to, newIssue.assigned_to)
-                assert.equal(res.body.status_text, newIssue.status_text)
-                done()
+                assert.deepEqual(res.body, { result: 'successfully updated', _id })
+
+                chai.request(server)
+                  .get(`/api/issues/apitest?_id=${_id}`)
+                  .end((err, res) => {
+                    if (err) console.error(err)
+
+                    const doc = res.body[0]
+
+                    assert.equal(doc._id, _id)
+                    assert.equal(doc.issue_title, updatedIssue.issue_title)
+                    assert.equal(doc.issue_text, updatedIssue.issue_text)
+                    assert.equal(doc.created_by, updatedIssue.created_by)
+                    assert.equal(doc.assigned_to, updatedIssue.assigned_to)
+                    assert.equal(doc.status_text, updatedIssue.status_text)
+                    assert.isAbove(Date.parse(doc.updated_on), Date.parse(doc.created_on))
+
+                    done()
+                  })
               })
           })
       })
@@ -429,13 +441,25 @@ suite('Functional Tests', function() {
               .end((err, res) => {
                 if (err) console.error(err)
 
-                assert.equal(res.body._id, _id)
-                assert.equal(res.body.issue_title, newIssue.issue_title)
-                assert.equal(res.body.issue_text, issue_text)
-                assert.equal(res.body.created_by, newIssue.created_by)
-                assert.equal(res.body.assigned_to, newIssue.assigned_to)
-                assert.equal(res.body.status_text, newIssue.status_text)
-                done()
+                assert.deepEqual(res.body, { result: 'successfully updated', _id })
+
+                chai.request(server)
+                  .get(`/api/issues/apitest?_id=${_id}`)
+                  .end((err, res) => {
+                    if (err) console.error(err)
+
+                    const doc = res.body[0]
+
+                    assert.equal(doc._id, _id)
+                    assert.equal(doc.issue_title, updatedIssue.issue_title)
+                    assert.equal(doc.issue_text, issue_text)
+                    assert.equal(doc.created_by, updatedIssue.created_by)
+                    assert.equal(doc.assigned_to, updatedIssue.assigned_to)
+                    assert.equal(doc.status_text, updatedIssue.status_text)
+                    assert.isAbove(Date.parse(doc.updated_on), Date.parse(doc.created_on))
+
+                    done()
+                  })
               })
           })
       })
@@ -474,13 +498,24 @@ suite('Functional Tests', function() {
               .end((err, res) => {
                 if (err) console.error(err)
 
-                assert.equal(res.body._id, _id)
-                assert.equal(res.body.issue_title, newIssue.issue_title)
-                assert.equal(res.body.issue_text, newIssue.issue_text)
-                assert.equal(res.body.created_by, created_by)
-                assert.equal(res.body.assigned_to, newIssue.assigned_to)
-                assert.equal(res.body.status_text, newIssue.status_text)
-                done()
+                assert.deepEqual(res.body, { result: 'successfully updated', _id })
+
+                chai.request(server)
+                  .get(`/api/issues/apitest?_id=${_id}`)
+                  .end((err, res) => {
+                    if (err) console.error(err)
+
+                    const doc = res.body[0]
+
+                    assert.equal(doc._id, _id)
+                    assert.equal(doc.issue_title, updatedIssue.issue_title)
+                    assert.equal(doc.issue_text, updatedIssue.issue_text)
+                    assert.equal(doc.created_by, created_by)
+                    assert.equal(doc.assigned_to, updatedIssue.assigned_to)
+                    assert.equal(doc.status_text, updatedIssue.status_text)
+
+                    done()
+                  })
               })
           })
       })
@@ -519,13 +554,24 @@ suite('Functional Tests', function() {
               .end((err, res) => {
                 if (err) console.error(err)
 
-                assert.equal(res.body._id, _id)
-                assert.equal(res.body.issue_title, newIssue.issue_title)
-                assert.equal(res.body.issue_text, newIssue.issue_text)
-                assert.equal(res.body.created_by, newIssue.created_by)
-                assert.equal(res.body.assigned_to, assigned_to)
-                assert.equal(res.body.status_text, newIssue.status_text)
-                done()
+                assert.deepEqual(res.body, { result: 'successfully updated', _id })
+
+                chai.request(server)
+                  .get(`/api/issues/apitest?_id=${_id}`)
+                  .end((err, res) => {
+                    if (err) console.error(err)
+
+                    const doc = res.body[0]
+
+                    assert.equal(doc._id, _id)
+                    assert.equal(doc.issue_title, updatedIssue.issue_title)
+                    assert.equal(doc.issue_text, updatedIssue.issue_text)
+                    assert.equal(doc.created_by, updatedIssue.created_by)
+                    assert.equal(doc.assigned_to, assigned_to)
+                    assert.equal(doc.status_text, updatedIssue.status_text)
+
+                    done()
+                  })
               })
           })
       })
@@ -565,14 +611,25 @@ suite('Functional Tests', function() {
               .end((err, res) => {
                 if (err) console.error(err)
 
-                assert.equal(res.body._id, _id)
-                assert.equal(res.body.issue_title, newIssue.issue_title)
-                assert.equal(res.body.issue_text, newIssue.issue_text)
-                assert.equal(res.body.created_by, newIssue.created_by)
-                assert.equal(res.body.assigned_to, newIssue.assigned_to)
-                assert.equal(res.body.open, open)
-                assert.equal(res.body.status_text, newIssue.status_text)
-                done()
+                assert.deepEqual(res.body, { result: 'successfully updated', _id })
+
+                chai.request(server)
+                  .get(`/api/issues/apitest?_id=${_id}`)
+                  .end((err, res) => {
+                    if (err) console.error(err)
+
+                    const doc = res.body[0]
+
+                    assert.equal(doc._id, _id)
+                    assert.equal(doc.issue_title, updatedIssue.issue_title)
+                    assert.equal(doc.issue_text, updatedIssue.issue_text)
+                    assert.equal(doc.created_by, updatedIssue.created_by)
+                    assert.equal(doc.assigned_to, updatedIssue.assigned_to)
+                    assert.equal(doc.open, open)
+                    assert.equal(doc.status_text, updatedIssue.status_text)
+
+                    done()
+                  })
               })
           })
       })
@@ -611,13 +668,24 @@ suite('Functional Tests', function() {
               .end((err, res) => {
                 if (err) console.error(err)
 
-                assert.equal(res.body._id, _id)
-                assert.equal(res.body.issue_title, newIssue.issue_title)
-                assert.equal(res.body.issue_text, newIssue.issue_text)
-                assert.equal(res.body.created_by, newIssue.created_by)
-                assert.equal(res.body.assigned_to, newIssue.assigned_to)
-                assert.equal(res.body.status_text, status_text)
-                done()
+                assert.deepEqual(res.body, { result: 'successfully updated', _id })
+
+                chai.request(server)
+                  .get(`/api/issues/apitest?_id=${_id}`)
+                  .end((err, res) => {
+                    if (err) console.error(err)
+
+                    const doc = res.body[0]
+
+                    assert.equal(doc._id, _id)
+                    assert.equal(doc.issue_title, updatedIssue.issue_title)
+                    assert.equal(doc.issue_text, updatedIssue.issue_text)
+                    assert.equal(doc.created_by, updatedIssue.created_by)
+                    assert.equal(doc.assigned_to, updatedIssue.assigned_to)
+                    assert.equal(doc.status_text, status_text)
+
+                    done()
+                  })
               })
           })
       })
@@ -658,13 +726,24 @@ suite('Functional Tests', function() {
               .end((err, res) => {
                 if (err) console.error(err)
 
-                assert.equal(res.body._id, _id)
-                assert.equal(res.body.issue_title, updatedIssue.issue_title)
-                assert.equal(res.body.issue_text, updatedIssue.issue_text)
-                assert.equal(res.body.created_by, updatedIssue.created_by)
-                assert.equal(res.body.assigned_to, updatedIssue.assigned_to)
-                assert.equal(res.body.status_text, updatedIssue.status_text)
-                done()
+                assert.deepEqual(res.body, { result: 'successfully updated', _id })
+
+                chai.request(server)
+                  .get(`/api/issues/apitest?_id=${_id}`)
+                  .end((err, res) => {
+                    if (err) console.error(err)
+
+                    const doc = res.body[0]
+
+                    assert.equal(doc._id, _id)
+                    assert.equal(doc.issue_title, updatedIssue.issue_title)
+                    assert.equal(doc.issue_text, updatedIssue.issue_text)
+                    assert.equal(doc.created_by, updatedIssue.created_by)
+                    assert.equal(doc.assigned_to, updatedIssue.assigned_to)
+                    assert.equal(doc.status_text, updatedIssue.status_text)
+
+                    done()
+                  })
               })
           })
       })
