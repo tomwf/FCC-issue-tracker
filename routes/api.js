@@ -8,25 +8,18 @@ module.exports = function (app) {
 
   let Issue
   const models = {}
-  const issueSchema = {
-    issue_title: {
-      type: String,
-      required: true
-    },
-    issue_text: {
-      type: String,
-      required: true
-    },
+  const issueSchema = new Schema({
+    issue_title: String,
+    issue_text: String,
     created_on: Date,
     updated_on: Date,
-    created_by: {
-      type: String,
-      required: true
-    },
+    created_by: String,
     assigned_to: String,
     open: Boolean,
     status_text: String
-  }
+  }, {
+    versionKey: false
+  })
 
   mongoose.connect(MONGO_URI)
 
