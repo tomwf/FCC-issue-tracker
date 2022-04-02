@@ -87,7 +87,11 @@ module.exports = function (app) {
         open,
         status_text
       } = req.body
-      const date = new Date()
+
+      // Empty required field
+      if (!issue_title || !issue_text || !created_by) {
+        return res.send({ error: 'required field(s) missing' })
+      }
 
       // Choose model
       try {
@@ -99,7 +103,9 @@ module.exports = function (app) {
         Issue = models[project]
       }
 
+
       // Instantiate a new issue
+      const date = new Date()
       const newIssue = new Issue({
         issue_title,
         issue_text,
