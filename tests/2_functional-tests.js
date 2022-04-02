@@ -756,6 +756,42 @@ suite('Functional Tests', function() {
           })
       })
     })
+
+    suite('The PUT request sent to /api/issues/{projectname} does not include update fields', function() {
+      test('Missing update field', function(done) {
+        const newIssue = {
+          issue_title: 'Missing update fields',
+          issue_text: 'One of more fields are missing in the PUT request',
+          created_by: 'me',
+          assigned_to: 'me',
+          status_text: 'pending'
+        }
+
+        // Create a new issue
+        chai.request(server)
+          .post('/api/issues/apitest')
+          .send(newIssue)
+          .end((err, res) => {
+            if (err) console.error(err)
+
+            const { _id } = res.body
+            const updatedIssue = {
+              _id
+            }
+
+            // Update the issue
+            chai.request(server)
+              .put('/api/issues/apitest')
+              .send(updatedIssue)
+              .end((err, res) => {
+                if (err) console.error(err)
+
+                assert.deepEqual(res.body, { error: 'no update field(s) sent', _id })
+                done()
+              })
+          })
+      })
+    })
   })
 
   suite('Test DELETE request', function() {
