@@ -124,27 +124,10 @@ module.exports = function (app) {
 
     .put(function (req, res){
       let project = req.params.project
-      const {
-        _id,
-        issue_title,
-        issue_text,
-        created_by,
-        assigned_to,
-        status_text,
-        open
-      } = req.body
+      const { _id } = req.body
 
       // Empty _id input
       if(!_id) return res.send({ error: 'missing _id' })
-
-      // Missing field(s)
-      if (
-        issue_title === undefined || issue_text === undefined
-        || created_by === undefined || assigned_to === undefined
-        || status_text === undefined
-      ) {
-        return res.send({ error: 'no update field(s) sent', _id })
-      }
 
       // Choose model
       try {
@@ -156,24 +139,24 @@ module.exports = function (app) {
         Issue = models[project]
       }
 
-      Issue.findById(_id, (err, doc) => {
-        // Invalid _id format
+      const updatedIssue = {}
+
+      for (const key in req.body) {
+        if (key && key !== '_id') {
+          updatedIssue[key] = req.body[key]
+        }
+      }
+
+      // Check when no field is sent
+      if (Object.keys(updatedIssue).length === 0) return res.send({ error: 'no update field(s) sent', _id })
+
+      // Update updated_on
+      updatedIssue.updated_on = new Date()
+
+      Issue.findByIdAndUpdate(_id, { $set: updatedIssue }, { new: true }, (err, doc) => {
         if (err || !doc) return res.send({ error: 'could not update', _id })
 
-        // Update fields
-        doc.issue_title = issue_title ? issue_title : ''
-        doc.issue_text = issue_text ? issue_text : ''
-        doc.created_by = created_by ? created_by : ''
-        doc.assigned_to = assigned_to ? assigned_to : ''
-        doc.status_text = status_text ? status_text : ''
-        doc.open = open === undefined ? doc.open : open
-        doc.updated_on = new Date()
-
-        doc.save((err, response) => {
-          if (err) console.error(err)
-
-          res.send({ result: 'successfully updated', _id })
-        })
+        res.send({ result: 'successfully updated', _id })
       })
     })
 
