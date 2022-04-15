@@ -42,7 +42,7 @@ module.exports = function (app) {
         Issue = mongoose.model(project, issueSchema)
         models[project] = Issue
       } catch(e) {
-        console.log('Current model: ' + project)
+        // console.log('Current model: ' + project)
       } finally {
         Issue = models[project]
       }
@@ -98,7 +98,7 @@ module.exports = function (app) {
         Issue = mongoose.model(project, issueSchema)
         models[project] = Issue
       } catch(e) {
-        console.log('Current model: ' + project)
+        // console.log('Current model: ' + project)
       } finally {
         Issue = models[project]
       }
@@ -151,7 +151,7 @@ module.exports = function (app) {
         Issue = mongoose.model(project, issueSchema)
         models[project] = Issue
       } catch(e) {
-        console.log('Current model: ' + project)
+        // console.log('Current model: ' + project)
       } finally {
         Issue = models[project]
       }
